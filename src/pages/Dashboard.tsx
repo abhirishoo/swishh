@@ -208,149 +208,136 @@ const Dashboard = () => {
               </Button>
             </div>
           </div>
-        </nav>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Your Campaigns
-            </h1>
-            <p className="text-base sm:text-lg text-gray-600 mt-2">
-              Manage and track your video promotion campaigns
-            </p>
-          </div>
-
-          <div className="mb-8">
-            <Button 
-              onClick={() => setShowForm(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-              size="lg"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Create New Campaign
-            </Button>
-          </div>
-
-          {campaigns.length === 0 ? (
-            <Card className="text-center py-12 sm:py-16 border shadow-sm bg-white">
-              <CardContent>
-                <BarChart3 className="h-16 w-16 sm:h-20 sm:w-20 text-gray-400 mx-auto mb-6" />
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">
-                  No campaigns yet
-                </h3>
-                <p className="text-base sm:text-lg text-gray-600 mb-6">
-                  Create your first campaign to start promoting your videos
-                </p>
-                <Button 
-                  onClick={() => setShowForm(true)}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
-                  size="lg"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Create Campaign
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {campaigns.map((campaign) => (
-                <Card key={campaign.id} className="border shadow-sm hover:shadow-md transition-all duration-300 bg-white">
-                  <CardContent className="p-0">
-                    {/* YouTube Thumbnail Section */}
-                    <div className="relative">
-                      {(campaign.youtube_video_url || campaign.video_url) ? (
-                        <YouTubeThumbnail 
-                          videoUrl={campaign.youtube_video_url || campaign.video_url} 
-                          size="md"
-                          className="h-32 w-full rounded-t-lg"
-                        />
-                      ) : (
-                        <div className="h-32 w-full bg-gray-100 flex items-center justify-center rounded-t-lg">
-                          <Play className="h-8 w-8 text-gray-400" />
-                        </div>
-                      )}
-                      <div className="absolute top-2 right-2">
-                        {getStatusBadge(campaign.status)}
-                      </div>
-                    </div>
-
-                    {/* Campaign Details Section */}
-                    <div className="p-4">
-                      <div className="mb-3">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
-                          {campaign.title}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Target: {campaign.target_views?.toLocaleString()} views
-                        </p>
-                      </div>
-
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center text-gray-600">
-                            <Eye className="h-4 w-4 mr-1" />
-                            <span>Views</span>
-                          </div>
-                          <span className="font-medium text-gray-900">
-                            {campaign.current_views?.toLocaleString() || 0}
-                          </span>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center text-gray-600">
-                            <DollarSign className="h-4 w-4 mr-1" />
-                            <span>Budget</span>
-                          </div>
-                          <span className="font-medium text-gray-900">${campaign.budget}</span>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center text-gray-600">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            <span>Duration</span>
-                          </div>
-                          <span className="font-medium text-gray-900">{campaign.campaign_duration} days</span>
-                        </div>
-                      </div>
-
-                      {campaign.status === 'pending' && (
-                        <div className="mb-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                          <Button
-                            onClick={() => navigate(`/payment/${campaign.id}`)}
-                            className="w-full bg-orange-500 hover:bg-orange-600 text-white text-sm"
-                            size="sm"
-                          >
-                            <CreditCard className="h-4 w-4 mr-2" />
-                            Complete Payment
-                          </Button>
-                          <p className="text-xs text-orange-700 mt-2 text-center">
-                            Activate after payment
-                          </p>
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-xs text-gray-500">
-                          {getStatusIcon(campaign.status)}
-                          <span className="ml-1 capitalize">{campaign.status}</span>
-                        </div>
-
-                        <CampaignActions
-                          campaign={campaign}
-                          onCampaignUpdated={fetchCampaigns}
-                          onEditClick={() => handleEditCampaign(campaign)}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
         </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            Your Campaigns
+          </h1>
+          <p className="text-base sm:text-lg text-gray-600 mt-2">
+            Manage and track your video promotion campaigns
+          </p>
+        </div>
+
+        <div className="mb-8">
+          <Button 
+            onClick={() => setShowForm(true)}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+            size="lg"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Create New Campaign
+          </Button>
+        </div>
+
+        {campaigns.length === 0 ? (
+          <Card className="text-center py-12 sm:py-16 border shadow-sm bg-white">
+            <CardContent>
+              <BarChart3 className="h-16 w-16 sm:h-20 sm:w-20 text-gray-400 mx-auto mb-6" />
+              <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">
+                No campaigns yet
+              </h3>
+              <p className="text-base sm:text-lg text-gray-600 mb-6">
+                Create your first campaign to start promoting your videos
+              </p>
+              <Button 
+                onClick={() => setShowForm(true)}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+                size="lg"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Create Campaign
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {campaigns.map((campaign) => (
+              <Card key={campaign.id} className="border border-orange-200 shadow-sm hover:shadow-md transition-all duration-300 bg-white hover:border-orange-300">
+                <CardContent className="p-0">
+                  <div className="relative">
+                    {(campaign.youtube_video_url || campaign.video_url) ? (
+                      <YouTubeThumbnail 
+                        videoUrl={campaign.youtube_video_url || campaign.video_url} 
+                        size="sm"
+                        className="h-24 w-full rounded-t-lg"
+                      />
+                    ) : (
+                      <div className="h-24 w-full bg-gray-100 flex items-center justify-center rounded-t-lg">
+                        <Play className="h-6 w-6 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute top-1 right-1">
+                      {getStatusBadge(campaign.status)}
+                    </div>
+                  </div>
+
+                  <div className="p-3">
+                    <div className="mb-2">
+                      <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">
+                        {campaign.title}
+                      </h3>
+                      <p className="text-xs text-gray-600">
+                        {campaign.target_views?.toLocaleString()} views
+                      </p>
+                    </div>
+
+                    <div className="space-y-1 mb-3">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center text-gray-600">
+                          <Eye className="h-3 w-3 mr-1" />
+                          <span>Views</span>
+                        </div>
+                        <span className="font-medium text-gray-900">
+                          {campaign.current_views?.toLocaleString() || 0}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center text-gray-600">
+                          <DollarSign className="h-3 w-3 mr-1" />
+                          <span>Budget</span>
+                        </div>
+                        <span className="font-medium text-orange-600">${campaign.budget}</span>
+                      </div>
+                    </div>
+
+                    {campaign.status === 'pending' && (
+                      <div className="mb-3 p-2 bg-orange-50 border border-orange-200 rounded">
+                        <Button
+                          onClick={() => navigate(`/payment/${campaign.id}`)}
+                          className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xs h-7"
+                          size="sm"
+                        >
+                          <CreditCard className="h-3 w-3 mr-1" />
+                          Pay Now
+                        </Button>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-xs text-gray-500">
+                        {getStatusIcon(campaign.status)}
+                        <span className="ml-1 capitalize">{campaign.status}</span>
+                      </div>
+
+                      <CampaignActions
+                        campaign={campaign}
+                        onCampaignUpdated={fetchCampaigns}
+                        onEditClick={() => handleEditCampaign(campaign)}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default Dashboard;
