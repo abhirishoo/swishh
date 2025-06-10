@@ -32,8 +32,8 @@ const AdminLogin = () => {
 
     if (validAdmin) {
       toast({
-        title: "Admin Access Granted",
-        description: "Welcome to the admin dashboard.",
+        title: "Access Granted",
+        description: "Welcome to the dashboard.",
       });
       // Store admin session
       localStorage.setItem('swishview_admin', JSON.stringify({ id: adminId, timestamp: Date.now() }));
@@ -41,7 +41,7 @@ const AdminLogin = () => {
     } else {
       toast({
         title: "Access Denied",
-        description: "Invalid admin credentials.",
+        description: "Invalid credentials.",
         variant: "destructive",
       });
     }
@@ -50,35 +50,35 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/10 backdrop-blur-lg">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-lg border bg-white">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="p-4 bg-red-500/20 rounded-full">
-              <Shield className="h-8 w-8 text-red-400" />
+            <div className="p-4 bg-orange-100 rounded-full">
+              <Shield className="h-8 w-8 text-orange-600" />
             </div>
           </div>
-          <CardTitle className="text-2xl text-white">Admin Access</CardTitle>
-          <CardDescription className="text-gray-300">
-            Enter your admin credentials to continue
+          <CardTitle className="text-2xl text-gray-900">Admin Access</CardTitle>
+          <CardDescription className="text-gray-600">
+            Enter your credentials to continue
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <form onSubmit={handleAdminLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="adminId" className="text-sm text-gray-200">Admin ID</Label>
+              <Label htmlFor="adminId" className="text-sm text-gray-700">Admin ID</Label>
               <Input
                 id="adminId"
                 type="text"
                 value={adminId}
                 onChange={(e) => setAdminId(e.target.value)}
                 required
-                className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-red-400"
+                className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Enter admin ID"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm text-gray-200">Password</Label>
+              <Label htmlFor="password" className="text-sm text-gray-700">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -86,7 +86,7 @@ const AdminLogin = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-red-400 pr-10"
+                  className="border-gray-300 focus:border-orange-500 focus:ring-orange-500 pr-10"
                   placeholder="Enter password"
                 />
                 <Button
@@ -106,10 +106,10 @@ const AdminLogin = () => {
             </div>
             <Button 
               type="submit" 
-              className="w-full bg-red-600 hover:bg-red-700 text-white" 
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white" 
               disabled={loading}
             >
-              {loading ? "Verifying..." : "Access Admin Dashboard"}
+              {loading ? "Verifying..." : "Access Dashboard"}
             </Button>
           </form>
           
@@ -117,7 +117,7 @@ const AdminLogin = () => {
             <Button
               variant="ghost"
               onClick={() => navigate("/")}
-              className="text-gray-400 hover:text-white"
+              className="text-gray-500 hover:text-gray-700"
             >
               Back to Home
             </Button>
