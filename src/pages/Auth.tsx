@@ -148,24 +148,26 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <SwishViewLogo size="xl" />
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-sm border bg-white">
+        <CardHeader className="text-center space-y-6">
+          <div className="flex items-center justify-center">
+            <SwishViewLogo size="lg" />
           </div>
-          <CardTitle className="text-xl sm:text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            {isLogin ? "Welcome Back" : "Create Account"}
-          </CardTitle>
-          <CardDescription className="text-sm sm:text-base">
-            {isLogin ? "Sign in to your Swish View account" : "Join Swish View today"}
-          </CardDescription>
+          <div>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {isLogin ? "Welcome Back" : "Create Account"}
+            </CardTitle>
+            <CardDescription className="text-gray-600 mt-2">
+              {isLogin ? "Sign in to your Swish View account" : "Join Swish View today"}
+            </CardDescription>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <Button
             type="button"
             variant="outline"
-            className="w-full flex items-center gap-3 text-sm sm:text-base h-11 hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-center gap-3 h-12 border-gray-300 hover:bg-gray-50"
             onClick={handleGoogleAuth}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -179,72 +181,65 @@ const Auth = () => {
           
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-gray-300" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or</span>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">OR</span>
             </div>
           </div>
 
           <form onSubmit={handleAuth} className="space-y-4">
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-sm">Full Name</Label>
+                <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name</Label>
                 <Input
                   id="fullName"
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required={!isLogin}
-                  className="h-11"
+                  className="h-11 border-gray-300"
                 />
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm">Email</Label>
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-11"
+                className="h-11 border-gray-300"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm">Password</Label>
+              <Label htmlFor="password" className="text-sm font-medium text-gray-700">Password</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="h-11"
+                className="h-11 border-gray-300"
               />
             </div>
             <Button 
               type="submit" 
-              className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
+              className="w-full h-11 bg-orange-500 hover:bg-orange-600 text-white" 
               disabled={loading}
             >
               {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
             </Button>
           </form>
 
-          <div className="text-center text-sm space-y-2">
+          <div className="text-center text-sm">
             <button
               type="button"
-              className="text-primary hover:underline block w-full"
+              className="text-orange-500 hover:underline"
               onClick={() => setIsLogin(!isLogin)}
             >
               {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-            </button>
-            <button
-              type="button"
-              className="text-gray-500 hover:text-gray-700 text-xs"
-              onClick={() => navigate("/admin-login")}
-            >
-              Admin Access
             </button>
           </div>
         </CardContent>

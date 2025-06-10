@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +15,9 @@ import {
   CheckCircle,
   CreditCard,
   LogOut,
-  BarChart3
+  BarChart3,
+  Edit,
+  Trash2
 } from "lucide-react";
 import SwishViewLogo from "@/components/SwishViewLogo";
 import CampaignActions from "@/components/CampaignActions";
@@ -137,20 +138,6 @@ const Dashboard = () => {
     );
   };
 
-  const getStatusIcon = (status: string) => {
-    const iconClass = "h-4 w-4";
-    switch (status) {
-      case 'active':
-        return <Play className={`${iconClass} text-green-600`} />;
-      case 'completed':
-        return <CheckCircle className={`${iconClass} text-blue-600`} />;
-      case 'paused':
-        return <Pause className={`${iconClass} text-gray-600`} />;
-      default:
-        return <CreditCard className={`${iconClass} text-orange-600`} />;
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -224,7 +211,7 @@ const Dashboard = () => {
         <div className="mb-8">
           <Button 
             onClick={() => setShowForm(true)}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg"
             size="lg"
           >
             <Plus className="h-5 w-5 mr-2" />
@@ -253,81 +240,119 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="space-y-4">
             {campaigns.map((campaign) => (
-              <Card key={campaign.id} className="border border-orange-200 shadow-sm hover:shadow-md transition-all duration-300 bg-white hover:border-orange-300">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    {(campaign.youtube_video_url || campaign.video_url) ? (
-                      <YouTubeThumbnail 
-                        videoUrl={campaign.youtube_video_url || campaign.video_url} 
-                        size="sm"
-                        className="h-24 w-full rounded-t-lg"
-                      />
-                    ) : (
-                      <div className="h-24 w-full bg-gray-100 flex items-center justify-center rounded-t-lg">
-                        <Play className="h-6 w-6 text-gray-400" />
-                      </div>
-                    )}
-                    <div className="absolute top-1 right-1">
-                      {getStatusBadge(campaign.status)}
-                    </div>
-                  </div>
-
-                  <div className="p-3">
-                    <div className="mb-2">
-                      <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">
-                        {campaign.title}
-                      </h3>
-                      <p className="text-xs text-gray-600">
-                        {campaign.target_views?.toLocaleString()} views
-                      </p>
-                    </div>
-
-                    <div className="space-y-1 mb-3">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center text-gray-600">
-                          <Eye className="h-3 w-3 mr-1" />
-                          <span>Views</span>
+              <Card key={campaign.id} className="border shadow-sm bg-white">
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row gap-6">
+                    {/* Left: Video Thumbnail */}
+                    <div className="flex-shrink-0">
+                      <div className="relative">
+                        {(campaign.youtube_video_url || campaign.video_url) ? (
+                          <YouTubeThumbnail 
+                            videoUrl={campaign.youtube_video_url || campaign.video_url} 
+                            size="lg"
+                            className="h-32 w-56 rounded-lg"
+                          />
+                        ) : (
+                          <div className="h-32 w-56 bg-gray-100 flex items-center justify-center rounded-lg">
+                            <Play className="h-8 w-8 text-gray-400" />
+                          </div>
+                        )}
+                        <div className="absolute top-2 right-2">
+                          {getStatusBadge(campaign.status)}
                         </div>
-                        <span className="font-medium text-gray-900">
-                          {campaign.current_views?.toLocaleString() || 0}
-                        </span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center text-gray-600">
-                          <DollarSign className="h-3 w-3 mr-1" />
-                          <span>Budget</span>
-                        </div>
-                        <span className="font-medium text-orange-600">${campaign.budget}</span>
                       </div>
                     </div>
 
-                    {campaign.status === 'pending' && (
-                      <div className="mb-3 p-2 bg-orange-50 border border-orange-200 rounded">
+                    {/* Center: Campaign Details */}
+                    <div className="flex-1">
+                      <div className="mb-4">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                          {campaign.title}
+                        </h3>
+                        <p className="text-gray-600">
+                          Target: {campaign.target_views?.toLocaleString()} views
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-6">
+                        <div className="flex items-center">
+                          <Eye className="h-4 w-4 text-gray-500 mr-2" />
+                          <div>
+                            <p className="text-sm text-gray-500">Current Views</p>
+                            <p className="font-semibold text-gray-900">
+                              {campaign.current_views?.toLocaleString() || 0}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center">
+                          <DollarSign className="h-4 w-4 text-gray-500 mr-2" />
+                          <div>
+                            <p className="text-sm text-gray-500">Budget</p>
+                            <p className="font-semibold text-gray-900">${campaign.budget}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 text-gray-500 mr-2" />
+                          <div>
+                            <p className="text-sm text-gray-500">Duration</p>
+                            <p className="font-semibold text-gray-900">{campaign.campaign_duration} days</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {campaign.status === 'pending' && (
+                        <div className="mt-4">
+                          <Button
+                            onClick={() => navigate(`/payment/${campaign.id}`)}
+                            className="bg-orange-500 hover:bg-orange-600 text-white"
+                            size="sm"
+                          >
+                            <CreditCard className="h-4 w-4 mr-2" />
+                            Complete Payment with PayPal
+                          </Button>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Campaign will activate after payment
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right: Actions */}
+                    <div className="flex flex-col justify-between items-end">
+                      <div className="text-sm text-gray-500 mb-4">
+                        {campaign.status === 'active' && (
+                          <div className="flex items-center text-green-600">
+                            <CheckCircle className="h-4 w-4 mr-1" />
+                            Active
+                          </div>
+                        )}
+                        {campaign.status === 'pending' && (
+                          <div className="flex items-center text-orange-600">
+                            <CreditCard className="h-4 w-4 mr-1" />
+                            Pending
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex gap-2">
                         <Button
-                          onClick={() => navigate(`/payment/${campaign.id}`)}
-                          className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xs h-7"
+                          variant="outline"
                           size="sm"
+                          onClick={() => handleEditCampaign(campaign)}
                         >
-                          <CreditCard className="h-3 w-3 mr-1" />
-                          Pay Now
+                          <Edit className="h-4 w-4 mr-1" />
+                          Edit
                         </Button>
+                        <CampaignActions
+                          campaign={campaign}
+                          onCampaignUpdated={fetchCampaigns}
+                          onEditClick={() => handleEditCampaign(campaign)}
+                        />
                       </div>
-                    )}
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-xs text-gray-500">
-                        {getStatusIcon(campaign.status)}
-                        <span className="ml-1 capitalize">{campaign.status}</span>
-                      </div>
-
-                      <CampaignActions
-                        campaign={campaign}
-                        onCampaignUpdated={fetchCampaigns}
-                        onEditClick={() => handleEditCampaign(campaign)}
-                      />
                     </div>
                   </div>
                 </CardContent>
